@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block app_content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="mb-4 font-weight-bold">Viewing Tasklist</h2>
+
+            <!-- Knopf um zu Uebersicht der mit einem geteilten Tasklisten zurueckzukehren -->
+            <a href="{{ url_for('shared_tasklists') }}" class="btn btn-secondary mb-4">Return to Shared Tasklists</a>
+			<!-- Anzeige ob Open oder Completed Tasks angezeigt werden -->
+            <h2 class="mb-4 font-weight-bold">{{ 'Open Tasks' if session.get('shared_task_view', 'open') == 'open' else 'Completed Tasks' }}</h2>
+
+            <!-- Button um zwischen Open oder Completed Tasks wechseln -->
+            <form action="{{ url_for('toggle_shared_task_view', tasklist_id=tasklist.id) }}" method="post" class="mb-4">
+                <input type="submit" value="Toggle View (Open/Completed)" class="btn btn-secondary">
+            </form>
+
+            <!-- For schleife um Tasks in Tabelle anzuzeigen. Inkl. Optionen dass zu lange Woerter nicht Darstellung negativ beeinflussen word-wrap: break-word. -->
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th style="max-width: 200px; word-wrap: break-word;">Title:</th>
+                        <th style="max-width: 400px; word-wrap: break-word;">Description:</th>
+                        <th style="white-space: nowrap;">Due Date:</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in tasklist.tasks %}
+                    <tr>
+                        <td style="max-width: 200px; word-wrap: break-word;">{{ task.title }}</td>
+                        <td style="max-width: 400px; word-wrap: break-word;">{{ task.description }}</td>
+                        <td style="white-space: nowrap;">{{ task.due_date.strftime('%d / %m / %Y') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

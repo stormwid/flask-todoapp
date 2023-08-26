@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+<!-- Index.html von microblog dupliziert und stark angepasst -->
+{% block app_content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="mb-4 font-weight-bold">New Task</h2>
+            <!-- Task Formular -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    {% if task_form %}
+                    <form action="" method="post">
+                        {{ wtf.quick_form(task_form) }}
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+			<!-- Anzeige ob Open oder Completed Tasks angezeigt werden -->
+            <h2 class="mb-4 font-weight-bold">{{ 'Open Tasks' if session.get('task_view', 'open') == 'open' else 'Completed Tasks' }}</h2>
+            
+            <!-- Button um zwischen Open oder Completed Tasks wechseln -->
+            <form action="{{ url_for('toggle_task_view') }}" method="post" class="mb-4">
+                <input type="submit" value="Toggle View (Open/Completed)" class="btn btn-secondary">
+            </form>
+
+            <!-- Tabelle um Tasks anzuzeigen -->
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th style="max-width: 200px; word-wrap: break-word;">Title:</th>
+                        <th style="max-width: 400px; word-wrap: break-word;">Description:</th>
+                        <th style="white-space: nowrap;">Due Date:</th>
+                        <th style="white-space: nowrap;">Actions</th>
+                    </tr>
+                </thead>
+				<!-- For schleife um Tasks in Tabelle anzuzeigen. Inkl. Optionen dass zu lange Woerter nicht Darstellung negativ beeinflussen word-wrap: break-word. Buttons um Tasks zu Loeschen, Editieren oder der Tasksstatus zu aendern -->
+                <tbody>
+                    {% for task in tasks %}
+                    <tr>
+                        <td style="max-width: 200px; word-wrap: break-word;">{{ task.title }}</td>
+                        <td style="max-width: 400px; word-wrap: break-word;">{{ task.description }}</td>
+                        <td style="white-space: nowrap;">{{ task.due_date.strftime('%d / %m / %Y') }}</td>
+                        <td style="white-space: nowrap;">
+                            <form action="{{ url_for('complete_task', task_id=task.id) }}" method="post" style="display: inline;">
+                                {% if session.get('task_view', 'open') == 'completed' %}
+                                <input type="submit" value="Reopen" class="btn btn-warning btn-sm">
+                                {% else %}
+                                <input type="submit" value="Complete" class="btn btn-success btn-sm">
+                                {% endif %}
+                            </form>
+                            
+                            <form action="{{ url_for('edit_task', task_id=task.id) }}" method="get" style="display: inline;">
+                                <input type="submit" value="Edit" class="btn btn-primary btn-sm">
+                            </form>
+                            <form action="{{ url_for('delete_task', task_id=task.id) }}" method="post" style="display: inline;">
+                                <input type="submit" value="Delete" class="btn btn-danger btn-sm">
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+<!-- Von edit_profile.html uebernommen und leicht angepasst -->
+{% block app_content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="mb-4 font-weight-bold">Edit Task</h2>
+            
+            <!-- Edit Task Formular -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    {% if edit_task_form %}
+                    <form action="" method="post">
+                        {{ wtf.quick_form(edit_task_form) }}
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

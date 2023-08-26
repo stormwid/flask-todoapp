@@ -1,0 +1,12 @@
+runtime: python311
+instance_class: F1
+service: todoapp
+automatic_scaling:
+  target_cpu_utilization: 0.75
+  min_instances: 1
+  max_instances: 10
+entrypoint: gunicorn -b :$PORT todoapp:app
+
+env_variables:
+  SECRET_KEY: 'your-secret-key'
+  DATABASE_URL: 'mysql+pymysql://USERNAME:PASSWORD@/DBNAME?unix_socket=/cloudsql/GOOGLE_CLOUD_SQL_INSTANCE_NAME'

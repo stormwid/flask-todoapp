@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block app_content %}
+    <h1>Tasklists shared with you</h1>
+    <ul>
+		<!-- Alle Benutzer anzeigen welche dem aktuellen Benutzer eine Taskliste geteilt haben -->
+        {% for share in shared %}
+        <li><a href="{{ url_for('view_shared_tasklist', tasklist_id=share.task_list_id) }}">{{ share.task_list.user.username }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}
