@@ -7,6 +7,6 @@
 - Unter API and Services Cloud Logging API, Compute Engine API,  Cloud Pub/Sub API, Cloud SQL Admin API aktivieren falls nicht bereits aktiviert
 
 # App Deployment
-- Google Cloud CLI https://cloud.google.com/sdk/docs/install?hl=de#windows installieren
+- Google Cloud CLI https://cloud.google.com/sdk/docs/install?hl=de#windows installieren und konfigurieren
 - In das Directory wo flask-todoapp gespeichert wurde wechseln
 - "gcloud app deploy" Befehl absetzen
